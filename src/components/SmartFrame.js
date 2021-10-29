@@ -7,7 +7,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 const useStyles = makeStyles((theme) => ({
     main: {
         width: '100%',
-        height: ''
+        height: '100%'
     },
     loader:{
         color: 'black',
@@ -22,53 +22,31 @@ const useStyles = makeStyles((theme) => ({
 
 const SmartFrame = () => {
     const cssTheme = useStyles();
-    const [galleryItems, setGalleryItems] = useState([])
     const [loading, setLoading] = useState(true);
     const [imageIdData, setImageIdDate] = useState([])
 
     useEffect(() => {    
-        async function fetchImages() {
-            const imagesIDData = await axios.get(`https://collectionapi.metmuseum.org/public/collection/v1/objects`);
-            console.log(imagesIDData.data.objectIDs);
-            setImageIdDate(imagesIDData);
-            let images = [];
-            let j = 0;
-            for(let i = imagesIDData.data.objectIDs[0] ; i <= imagesIDData.data.objectIDs.length; i++){
-            await axios.get(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${imagesIDData.data.objectIDs[i]}`)
-            // eslint-disable-next-line no-loop-func
-            .then(response => {
-               // console.log(response.data.primaryImage);
-                if(response.data.primaryImage !== '') {
-                    images.push(<img src = {response.data.primaryImage} alt={response.data.objectID} style = {{height:'1200px', width: '1920px'}}/>);
-                    j = j + 1;
-                }
-                if(j === 8){
-                    console.log('calling from parent')
-                    setGalleryItems(images); 
-                    setLoading(false);
-                    j = 0
-                }if(i === imagesIDData.data.objectIDs.length){
-                    i = 1;
-                }
-                
-            })
-        }
-        
-        }
         fetchImages()     
     },[]);
-
+    async function fetchImages() {
+        console.log('in MAIN CALLLLLLL')
+        const imagesIDData = await axios.get(`https://collectionapi.metmuseum.org/public/collection/v1/objects`);
+        console.log(imagesIDData.data.objectIDs);
+        setImageIdDate(imagesIDData.data);
+        setLoading(false);
+    
+    }
    
     
     return (
-        <div>
+        <div className={cssTheme.main}>
           {
                    loading &&
                    <CircularProgress size={50} className={cssTheme.loader} />
           }
 
             {
-                    !loading && <FullPageSlider images={galleryItems} dataLength = {imageIdData}/>
+                    !loading && <FullPageSlider dataLength = {imageIdData} />
             }
         </div>
     );
