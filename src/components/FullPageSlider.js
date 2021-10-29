@@ -72,7 +72,7 @@ const FullPageSlider = ({ ...props }) => {
         lazyLoad: true,
         autoplay: true,
         speed: 1000,
-        autoplaySpeed: 4000,
+        autoplaySpeed: 10000,
         pauseOnHover: true,
         pauseOnFocus:true,
         adaptiveHeight: true,
