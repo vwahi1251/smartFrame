@@ -13,6 +13,7 @@ const App = () => {
     <Router>
       <Switch>
         <Route path="/">
+          {/* MAIN PAGE */}
           <SmartFrame />
         </Route>
       </Switch>
